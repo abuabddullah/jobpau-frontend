@@ -1,8 +1,21 @@
-import React, { useEffect, useState } from "react";
+import {
+  GoogleAuthProvider,
+  createUserWithEmailAndPassword,
+  signInWithPopup,
+} from "firebase/auth";
+import React, { useContext, useEffect, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { auth } from "../../../../firebase.config";
 import loginImage from "../../../assets/login.svg";
+import { UserContext } from "../../contexts/UserContextProvider/UserContextProvider";
+
+export const googleProvider = new GoogleAuthProvider();
+
 const Signup = () => {
+  const { setUserLoading } = useContext(UserContext);
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/";
   const {
     handleSubmit,
     register,
@@ -30,7 +43,54 @@ const Signup = () => {
   }, [password, confirmPassword]);
 
   const onSubmit = (data) => {
-    console.log(data);
+    /* 1# : set loading to true */
+    setUserLoading(true);
+
+    /* 2# : create user with email and password */
+    const { email, password } = data;
+    console.log(email, password);
+
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        const signingUser = userCredential.user;
+        console.log(signingUser);
+        setUserLoading(false);
+        reset();
+        navigate(from, { replace: true });
+        // ...
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+        console.log(errorMessage);
+        setUserLoading(false);
+        // ..
+      });
+
+    /* 3# : set loading to false */
+    setUserLoading(false);
+  };
+
+  const handleGoogleSignIn = () => {
+    /* 1# : set loading to true */
+    setUserLoading(true);
+
+    /* 2# : create user with email and password */
+    // const { email, password } = data;
+    // console.log(email, password);
+    signInWithPopup(auth, googleProvider)
+      .then((result) => {
+        console.log(result.user);
+        setUserLoading(false);
+        navigate(from, { replace: true });
+      })
+      .catch((error) => {
+        console.log(error.message);
+        setUserLoading(false);
+      });
+
+    /* 3# : set loading to false */
+    setUserLoading(false);
   };
 
   return (
@@ -91,6 +151,13 @@ const Signup = () => {
                   Sign up
                 </button>
               </div>
+              <div className="flex justify-center align-middle">or</div>
+              <button
+                onClick={handleGoogleSignIn}
+                className="font-bold text-white py-3 rounded-full bg-primary w-full disabled:bg-gray-300 disabled:cursor-not-allowed  bg-slate-600 hover:bg-white disabled:hover:text-white hover:text-black duration-300 border-2"
+              >
+                Google Sign up
+              </button>
               <div>
                 <p>
                   Already have an account?{" "}
