@@ -1,9 +1,9 @@
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import CandidateRegistration from "./CandidateRegistration";
-import EmployerRegistration from "./EmployerRegistration";
 import candidate from "../../../assets/candidate.svg";
 import employer from "../../../assets/employer.svg";
+import CandidateRegistration from "./CandidateRegistration";
+import EmployerRegistration from "./EmployerRegistration";
 
 const AccountCreator = () => {
   const navigate = useNavigate();

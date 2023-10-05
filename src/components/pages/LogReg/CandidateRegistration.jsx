@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { FaChevronLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../contexts/UserContextProvider/UserContextProvider";
 
 const CandidateRegistration = () => {
+  const { user } = useContext(UserContext);
   const [countries, setCountries] = useState([]);
   const { handleSubmit, register, control } = useForm();
   const term = useWatch({ control, name: "term" });
@@ -52,7 +54,13 @@ const CandidateRegistration = () => {
               <label className="mb-2" htmlFor="email">
                 Email
               </label>
-              <input type="email" id="email" {...register("email")} />
+              <input
+                type="email"
+                id="email"
+                disabled
+                defaultValue={user.email}
+                {...register("email")}
+              />
             </div>
             <div className="flex flex-col w-full max-w-xs">
               <h1 className="mb-3">Gender</h1>

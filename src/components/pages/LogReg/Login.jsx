@@ -1,16 +1,16 @@
 import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 
+import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { useLocation, useNavigate } from "react-router-dom";
+import { auth } from "../../../../firebase.config";
 import loginImage from "../../../assets/login.svg";
 import { UserContext } from "../../contexts/UserContextProvider/UserContextProvider";
-import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
-import { auth } from "../../../../firebase.config";
 import { googleProvider } from "./Signup";
 const Login = () => {
   const { setUserLoading } = useContext(UserContext);
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/";
+  const from = location.state?.from?.pathname || "/register";
   const {
     register,
     handleSubmit,
@@ -25,7 +25,7 @@ const Login = () => {
 
     /* 2# : sign user with email and password */
     const { email, password } = data;
-    console.log(email, password);
+    console.log("Onsubmit triggered from login", email, password);
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in
@@ -46,9 +46,7 @@ const Login = () => {
     /* 1# : set loading to true */
     setUserLoading(true);
 
-    /* 2# : create user with email and password */
-    // const { email, password } = data;
-    // console.log(email, password);
+    /* 2# : signIn user with gmail */
     signInWithPopup(auth, googleProvider)
       .then((result) => {
         console.log(result.user);
@@ -110,13 +108,6 @@ const Login = () => {
                   Login
                 </button>
               </div>
-              <div className="flex justify-center align-middle">or</div>
-              <button
-                onClick={handleGoogleSignIn}
-                className="font-bold text-white py-3 rounded-full bg-primary w-full disabled:bg-gray-300 disabled:cursor-not-allowed  bg-slate-600 hover:bg-white disabled:hover:text-white hover:text-black duration-300 border-2"
-              >
-                Google Log in
-              </button>
               <div>
                 <p>
                   Don't have an account?{" "}
@@ -130,6 +121,15 @@ const Login = () => {
               </div>
             </div>
           </form>
+          <div className="w-full">
+            <div className="flex justify-center align-middle">or</div>
+            <button
+              onClick={handleGoogleSignIn}
+              className="font-bold text-white py-3 rounded-full bg-primary w-full disabled:bg-gray-300 disabled:cursor-not-allowed  bg-slate-600 hover:bg-white disabled:hover:text-white hover:text-black duration-300 border-2"
+            >
+              Google Log in
+            </button>
+          </div>
         </div>
       </div>
     </div>

@@ -15,7 +15,7 @@ export const googleProvider = new GoogleAuthProvider();
 const Signup = () => {
   const { setUserLoading } = useContext(UserContext);
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/";
+  const from = location.state?.from?.pathname || "/register";
   const {
     handleSubmit,
     register,
@@ -48,7 +48,7 @@ const Signup = () => {
 
     /* 2# : create user with email and password */
     const { email, password } = data;
-    console.log(email, password);
+    console.log("Onsubmit triggered from signin", email, password);
 
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
@@ -151,13 +151,6 @@ const Signup = () => {
                   Sign up
                 </button>
               </div>
-              <div className="flex justify-center align-middle">or</div>
-              <button
-                onClick={handleGoogleSignIn}
-                className="font-bold text-white py-3 rounded-full bg-primary w-full disabled:bg-gray-300 disabled:cursor-not-allowed  bg-slate-600 hover:bg-white disabled:hover:text-white hover:text-black duration-300 border-2"
-              >
-                Google Sign up
-              </button>
               <div>
                 <p>
                   Already have an account?{" "}
@@ -171,6 +164,15 @@ const Signup = () => {
               </div>
             </div>
           </form>
+          <div className="w-full">
+            <div className="flex justify-center align-middle">or</div>
+            <button
+              onClick={handleGoogleSignIn}
+              className="font-bold text-white py-3 rounded-full bg-primary w-full disabled:bg-gray-300 disabled:cursor-not-allowed  bg-slate-600 hover:bg-white disabled:hover:text-white hover:text-black duration-300 border-2"
+            >
+              Google Sign up
+            </button>
+          </div>
         </div>
       </div>
     </div>
