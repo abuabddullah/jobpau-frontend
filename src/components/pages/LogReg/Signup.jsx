@@ -1,16 +1,14 @@
 import {
-  GoogleAuthProvider,
   createUserWithEmailAndPassword,
-  signInWithPopup,
+  signInWithPopup
 } from "firebase/auth";
 import React, { useContext, useEffect, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 import { auth } from "../../../../firebase.config";
 import loginImage from "../../../assets/login.svg";
-import { UserContext } from "../../contexts/UserContextProvider/UserContextProvider";
+import { UserContext, googleProvider } from "../../contexts/UserContextProvider/UserContextProvider";
 
-export const googleProvider = new GoogleAuthProvider();
 
 const Signup = () => {
   const { setUserLoading } = useContext(UserContext);

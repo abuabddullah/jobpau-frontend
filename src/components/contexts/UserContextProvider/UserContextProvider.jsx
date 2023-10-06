@@ -1,8 +1,9 @@
-import { onAuthStateChanged } from "firebase/auth";
+import { GoogleAuthProvider, onAuthStateChanged } from "firebase/auth";
 import React, { createContext, useEffect, useState } from "react";
 import { auth } from "../../../../firebase.config";
 
 export const UserContext = createContext();
+export const googleProvider = new GoogleAuthProvider();
 
 const UserContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);

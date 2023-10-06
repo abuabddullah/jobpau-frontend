@@ -5,8 +5,7 @@ import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { useLocation, useNavigate } from "react-router-dom";
 import { auth } from "../../../../firebase.config";
 import loginImage from "../../../assets/login.svg";
-import { UserContext } from "../../contexts/UserContextProvider/UserContextProvider";
-import { googleProvider } from "./Signup";
+import { UserContext, googleProvider } from "../../contexts/UserContextProvider/UserContextProvider";
 const Login = () => {
   const { setUserLoading } = useContext(UserContext);
   const location = useLocation();
@@ -25,7 +24,6 @@ const Login = () => {
 
     /* 2# : sign user with email and password */
     const { email, password } = data;
-    console.log("Onsubmit triggered from login", email, password);
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in
