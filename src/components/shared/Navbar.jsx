@@ -1,10 +1,14 @@
 import { signOut } from "firebase/auth";
 import React, { useContext } from "react";
+import { useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { auth } from "../../../firebase.config";
 import { UserContext } from "../contexts/UserContextProvider/UserContextProvider";
 
 const Navbar = () => {
+  const {
+    stateUser: { role },
+  } = useSelector((state) => state.authUser);
   const { user } = useContext(UserContext);
   const { pathname } = useLocation();
 
@@ -34,6 +38,29 @@ const Navbar = () => {
             Jobs
           </Link>
         </li>
+
+        {user && !role && (
+          <li>
+            <Link
+              className="border border-black px-4 py-1 rounded-full hover:border-primary hover:text-white hover:bg-primary transition-all "
+              to="/register"
+            >
+              Register
+            </Link>
+          </li>
+        )}
+
+        {user && role && (
+          <li>
+            <Link
+              className="border border-black px-4 py-1 rounded-full hover:border-primary hover:text-white hover:bg-primary transition-all "
+              to="/dashboard/employer"
+            >
+              Dashboard
+            </Link>
+          </li>
+        )}
+
         {user ? (
           <>
             <li>

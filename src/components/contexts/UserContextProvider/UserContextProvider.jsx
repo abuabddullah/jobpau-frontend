@@ -1,11 +1,17 @@
 import { GoogleAuthProvider, onAuthStateChanged } from "firebase/auth";
 import React, { createContext, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { auth } from "../../../../firebase.config";
+import {
+  resetStateUser,
+  setStateUser,
+} from "../../../reducers/authReducers/authSlice";
 
 export const UserContext = createContext();
 export const googleProvider = new GoogleAuthProvider();
 
 const UserContextProvider = ({ children }) => {
+  const dispatch = useDispatch();
   const [user, setUser] = useState(null);
   const [userLoading, setUserLoading] = useState(true);
 
@@ -13,6 +19,12 @@ const UserContextProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
+      if (currentUser?.email) {
+        dispatch(setStateUser({ email: currentUser.email, role: "" }));
+      }
+      if (!currentUser) {
+        dispatch(resetStateUser());
+      }
       setUserLoading(false);
     });
 
