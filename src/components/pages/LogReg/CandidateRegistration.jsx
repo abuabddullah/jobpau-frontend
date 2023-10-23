@@ -3,8 +3,11 @@ import { useForm, useWatch } from "react-hook-form";
 import { FaChevronLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContextProvider/UserContextProvider";
+import { useRegisterMutation } from "../../../reducers/api/authAPIs/authAPI";
 
 const CandidateRegistration = () => {
+  const [registerUser, { isLoading, isError, data, error }] =
+    useRegisterMutation();
   const { user } = useContext(UserContext);
   const [countries, setCountries] = useState([]);
   const { handleSubmit, register, control } = useForm();
@@ -20,6 +23,7 @@ const CandidateRegistration = () => {
 
   const onSubmit = (data) => {
     console.log(data);
+    registerUser({ ...data, role: "candidate" });
   };
 
   return (
@@ -57,7 +61,7 @@ const CandidateRegistration = () => {
               <input
                 type="email"
                 id="email"
-                disabled
+                // disabled
                 defaultValue={user.email}
                 {...register("email")}
               />
