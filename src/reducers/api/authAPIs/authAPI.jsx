@@ -1,3 +1,4 @@
+import { fetchUserDetailsAction } from "../../authReducers/authActions";
 import applicationAPI from "../applicationAPI";
 
 const authAPI = applicationAPI.injectEndpoints({
@@ -8,7 +9,16 @@ const authAPI = applicationAPI.injectEndpoints({
         method: "POST",
         body: userData,
       }),
-      invalidatesTags: ['users'],
+      invalidatesTags: ["users"],
+      async onQueryStarted(userData, { dispatch, queryFulfilled }) {
+        try {
+          const result = await queryFulfilled;
+          console.log(result.data);
+          dispatch(fetchUserDetailsAction(userData.email));
+        } catch (err) {
+          console.log(err);
+        }
+      },
     }),
   }),
 });

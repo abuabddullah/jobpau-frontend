@@ -6,6 +6,7 @@ import {
   resetStateUser,
   setStateUser,
 } from "../../../reducers/authReducers/authSlice";
+import { fetchUserDetailsAction } from "../../../reducers/authReducers/authActions";
 
 export const UserContext = createContext();
 export const googleProvider = new GoogleAuthProvider();
@@ -21,6 +22,7 @@ const UserContextProvider = ({ children }) => {
       setUser(currentUser);
       if (currentUser?.email) {
         dispatch(setStateUser({ email: currentUser.email, role: "" }));
+        dispatch(fetchUserDetailsAction(currentUser.email));
       }
       if (!currentUser) {
         dispatch(resetStateUser());
